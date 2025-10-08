@@ -1,0 +1,11 @@
+---
+interface Props {
+  title: string;
+  description: string;
+}
+---
+
+<article class="border border-input-border bg-input-background p-4">
+  <h1 class="text-lg font-medium mb-2 text-text">{Astro.props.title}</h1>
+  <p class="text-sm text-muted-foreground text-subtext">{Astro.props.description}</p>
+</article>

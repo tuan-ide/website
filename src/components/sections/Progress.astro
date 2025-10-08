@@ -1,0 +1,14 @@
+---
+import KanbanCard from "../KanbanCard.astro";
+import KanbanColumn from "../KanbanColumn.astro";
+---
+
+<div class="grid grid-cols-2">
+  <KanbanColumn title="To Do">
+    <KanbanCard title="Task 1" description="Description for Task 1" />
+  </KanbanColumn>
+
+  <KanbanColumn title="Done">
+    <KanbanCard title="Task 2" description="Description for Task 2" />
+  </KanbanColumn>
+</div>
