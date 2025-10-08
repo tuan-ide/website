@@ -15,6 +15,7 @@
     "tailwindcss": "^4.1.14"
   },
   "devDependencies": {
+    "@iconify-json/fa6-brands": "^1.2.6",
     "@iconify-json/mdi": "^1.2.3"
   }
 }
