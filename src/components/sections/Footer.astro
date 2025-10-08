@@ -2,13 +2,18 @@
 import JoinWaitlist from "./JoinWaitlist.astro";
 ---
 
-<footer class="border-input-border bg-input-background">
-  <p class="text-center text-xl font-medium text-text py-4">
+<footer
+  class="border border-input-border bg-input-background flex flex-col items-center justify-center py-16 px-4 rounded-lg"
+>
+  <p class="text-center text-4xl font-bold text-text py-4">
     Be the first to experience Tuan.
   </p>
-  <p>
+  <p class="text-balance text-subtext max-w-2xl text-center mb-6 px-4 text-lg">
     Be among the first to experience a new paradigm in development. Join our
     waitlist for exclusive access and updates.
   </p>
-  <JoinWaitlist />
+
+  <div class="mt-6">
+    <JoinWaitlist />
+  </div>
 </footer>

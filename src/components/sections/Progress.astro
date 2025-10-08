@@ -1,14 +1,48 @@
 ---
 import KanbanCard from "../KanbanCard.astro";
 import KanbanColumn from "../KanbanColumn.astro";
+import SectionHeader from "../SectionHeader.astro";
 ---
 
-<div class="grid grid-cols-2">
-  <KanbanColumn title="To Do">
-    <KanbanCard title="Task 1" description="Description for Task 1" />
-  </KanbanColumn>
+<article>
+  <SectionHeader
+    title="Our Progress"
+    description="Follow our journey as we build the future of coding."
+  />
 
-  <KanbanColumn title="Done">
-    <KanbanCard title="Task 2" description="Description for Task 2" />
-  </KanbanColumn>
-</div>
+  <div class="grid grid-cols-2 gap-6">
+    <KanbanColumn
+      title="Next Up"
+      description="What we're tackling next."
+      borderClassName="bg-amber-300"
+    >
+      <KanbanCard
+        title="Semantic Analysis"
+        description="Implement advanced semantic analysis to understand code contextually."
+        icon=""
+      />
+    </KanbanColumn>
+
+    <KanbanColumn
+      title="Done"
+      description="Key milestones we've already achieved."
+      borderClassName="bg-green-500"
+    >
+      <KanbanCard
+        title="VSCode Extension"
+        description="Created a VSCode extension to get Tuan's capabilities within the editor."
+        icon="check_circle"
+      />
+      <KanbanCard
+        title="Rust Core"
+        description="Built the core of Tuan in Rust for performance and reliability."
+        icon="check_circle"
+      />
+      <KanbanCard
+        title="Proof of Concept"
+        description="Validated the core concepts and the viability of the graph-based approach."
+        icon="check_circle"
+      />
+    </KanbanColumn>
+  </div>
+</article>

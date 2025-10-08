@@ -6,7 +6,7 @@ interface Props {
 }
 ---
 
-<article class="border border-input-border bg-input-background">
-  <h1>{Astro.props.title}</h1>
-  <p>{Astro.props.description}</p>
+<article class="border border-input-border bg-input-background flex flex-col items-center text-center rounded-md py-16 sm:py-24 gap-4">
+  <h1 class="text-text text-lg font-bold">{Astro.props.title}</h1>
+  <p class="text-subtext text-base text-balance">{Astro.props.description}</p>
 </article>

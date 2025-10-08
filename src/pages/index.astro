@@ -9,10 +9,20 @@ import Layout from "../layouts/Layout.astro";
 ---
 
 <Layout>
-  <Hero />
-  <JoinWaitlist />
-  <FeatureCards />
-  <SneakPeek />
-  <Progress />
-  <Footer />
+  <div class="h-svh flex flex-col justify-center items-center gap-8">
+    <Hero />
+    <JoinWaitlist />
+  </div>
+  <div class="-mt-24">
+    <FeatureCards />
+  </div>
+  <div class="my-48">
+    <SneakPeek />
+  </div>
+  <div class="my-48">
+    <Progress />
+  </div>
+  <div class="my-48">
+    <Footer />
+  </div>
 </Layout>

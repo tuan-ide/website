@@ -1,12 +1,16 @@
 ---
 interface Props {
   title: string;
+  description: string;
+  borderClassName: string;
 }
 ---
 
-<section class="flex flex-col gap-4 p-4 border border-input-border bg-input-background">
+<section class="flex flex-col gap-4 p-4 border border-input-border bg-input-background rounded-md">
+  <div class={`${Astro.props.borderClassName} h-1.5 w-[100%+32px] -mt-4 -mx-4 rounded-t-md`}></div>
   <header>
-    <h3 class="text-lg font-medium text-text">{Astro.props.title}</h3>
+    <h3 class="text-lg font-bold text-text font-section-title">{Astro.props.title}</h3>
+    <p class="text-sm text-subtext">{Astro.props.description}</p>
   </header>
   <div class="flex flex-col gap-4">
     <slot />

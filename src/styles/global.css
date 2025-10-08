@@ -3,11 +3,17 @@
 @theme {
   --color-background: #030712;
 
-  --color-primary: #EF4444;
-  
-  --color-text: #FFFFFF;
-  --color-subtext: #FFFFFF99;
+  --color-primary: #ef4444;
 
-  --color-input-background: #FFFFFF0D;
-  --color-input-border: #FFFFFF1A;
+  --color-text: #ffffff;
+  --color-subtext: #ffffff99;
+
+  --color-input-background: #ffffff0d;
+  --color-input-border: #ffffff1a;
+}
+
+@theme inline {
+  --font-hero: var(--font-clash-display);
+  --font-section-title: var(--font-clash-display);
+  --font-body: var(--font-satoshi);
 }
