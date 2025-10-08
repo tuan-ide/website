@@ -1,0 +1,196 @@
+---
+/* MADE WITH CHATGPT */
+---
+
+<div
+  class="absolute top-0 left-0 pointer-events-none -z-10"
+>
+  <canvas
+    style="position:absolute;top:0;left:0;width:60vw;height:55vh;opacity:0.8;"
+  >
+  </canvas>
+  <div
+    aria-hidden="true"
+    class="bg-background"
+    style="position:absolute;inset:0;pointer-events:none;z-index:1;
+       -webkit-mask-image:linear-gradient(330deg, rgb(0, 0, 0) 30%, rgba(0, 0, 0, 0) 80%);
+       mask-image:linear-gradient(330deg, rgb(0, 0, 0) 30%, rgba(0, 0, 0, 0) 80%);width:60vw;height:55vh;"
+  >
+  </div>
+</div>
+
+<script is:inline>
+  (() => {
+    // ====== TUNE THESE ======
+    const BASE_COLOR = "#EF4444"; // any CSS color
+    const MAX_LINK_DIST = 160; // px
+    const OPACITY = 1; // 0..1
+    const BLUR_PX = 0; // px blur; set >0 to soften
+
+    // Motion & population
+    const SPEED = 0.9; // 0 = pause; 0.1–0.4 subtle; 1 = baseline
+    const DENSITY_PER_10K = 0.02; // nodes per 10,000 px² (low = subtle)
+    const MIN_NODES = 2; // allow sparse
+    const MAX_NODES = 400; // perf cap
+    // ========================
+
+    const root = document.currentScript.previousElementSibling; // the <div>
+    const canvas = root.querySelector("canvas");
+    const ctx = canvas.getContext("2d", { alpha: true });
+    if (BLUR_PX) canvas.style.filter = `blur(${BLUR_PX}px)`;
+
+    // Color helper
+    function rgba(color, a) {
+      const off = document.createElement("span");
+      off.style.color = color;
+      document.body.appendChild(off);
+      const rgb = getComputedStyle(off).color;
+      document.body.removeChild(off);
+      const m = rgb.match(/\d+\.?\d*/g) || ["255", "255", "255"];
+      return `rgba(${m[0]}, ${m[1]}, ${m[2]}, ${Math.max(0, Math.min(1, a))})`;
+    }
+    // PRNG (fast & deterministic)
+    let seed = 1338;
+    function rand() {
+      seed ^= seed << 13;
+      seed ^= seed >>> 17;
+      seed ^= seed << 5;
+      return (seed >>> 0) / 4294967296;
+    }
+    function pick(min, max) {
+      return min + (max - min) * rand();
+    }
+
+    // Model
+    /** @type {Array<{x:number,y:number,vx:number,vy:number,r:number,phase:number,speed:number}>} */
+    let nodes = [];
+    let raf = null;
+    let t = 0;
+
+    function resize() {
+      const dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
+      const cssW = canvas.clientWidth,
+        cssH = canvas.clientHeight;
+      canvas.width = Math.max(1, Math.floor(cssW * dpr));
+      canvas.height = Math.max(1, Math.floor(cssH * dpr));
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+    function nodeCount() {
+      const area = canvas.clientWidth * canvas.clientHeight;
+      const est = Math.floor((area / 10000) * DENSITY_PER_10K * 100);
+      return Math.max(MIN_NODES, Math.min(MAX_NODES, est));
+    }
+    function initNodes() {
+      const count = nodeCount();
+      nodes = new Array(count).fill(0).map(() => ({
+        x: pick(8, canvas.clientWidth * 0.9),
+        y: pick(8, canvas.clientHeight * 0.9),
+        vx: pick(-0.05, 0.05), // lower initial energy = calmer start
+        vy: pick(-0.05, 0.05),
+        r: pick(1.5, 3.2),
+        phase: pick(0, Math.PI * 2),
+        speed: pick(0.4, 0.9),
+      }));
+    }
+    function step() {
+      const dt = 0.016 * SPEED; // master time scale
+      t += dt;
+
+      const w = canvas.clientWidth,
+        h = canvas.clientHeight;
+      ctx.clearRect(0, 0, w, h);
+
+      // Links
+      ctx.lineWidth = 1;
+      for (let i = 0; i < nodes.length; i++) {
+        const a = nodes[i];
+        for (let j = i + 1; j < nodes.length; j++) {
+          const b = nodes[j];
+          const dx = a.x - b.x,
+            dy = a.y - b.y;
+          const d2 = dx * dx + dy * dy;
+          if (d2 < MAX_LINK_DIST * MAX_LINK_DIST) {
+            const d = Math.sqrt(d2);
+            const alpha = 0.18 * (1 - d / MAX_LINK_DIST) * OPACITY;
+            ctx.strokeStyle = rgba(BASE_COLOR, alpha);
+            ctx.beginPath();
+            ctx.moveTo(a.x, a.y);
+            const mx = (a.x + b.x) / 2,
+              my = (a.y + b.y) / 2 - 0.08 * d;
+            ctx.quadraticCurveTo(mx, my, b.x, b.y);
+            ctx.stroke();
+          }
+        }
+      }
+
+      // Nodes — subtle drift + containment so halos never cut at edges
+      const damping = Math.pow(0.985, dt / 0.016);
+      for (const n of nodes) {
+        const driftX = Math.sin(n.phase + t * 0.8) * 0.12;
+        const driftY = Math.cos(n.phase * 1.3 + t * 0.7) * 0.12;
+
+        n.vx += (driftX * 0.02 + -n.x * 0.0005) * dt;
+        n.vy += (driftY * 0.02 + -n.y * 0.0005) * dt;
+
+        n.vx *= damping;
+        n.vy *= damping;
+        n.x += n.vx * n.speed * dt;
+        n.y += n.vy * n.speed * dt;
+
+        // Keep full halo inside canvas (padding = glow radius)
+        const rr = n.r * (1 + 0.35 * Math.sin(n.phase + t * 1.2));
+        const pad = Math.max(6, rr * 3.2 + 2);
+        if (n.x < pad) {
+          n.x = pad;
+          n.vx = Math.abs(n.vx) * 0.4;
+        }
+        if (n.x > w - pad) {
+          n.x = w - pad;
+          n.vx = -Math.abs(n.vx) * 0.4;
+        }
+        if (n.y < pad) {
+          n.y = pad;
+          n.vy = Math.abs(n.vy) * 0.4;
+        }
+        if (n.y > h - pad) {
+          n.y = h - pad;
+          n.vy = -Math.abs(n.vy) * 0.4;
+        }
+
+        // Draw node + halo
+        ctx.fillStyle = rgba(BASE_COLOR, 0.7 * OPACITY);
+        ctx.beginPath();
+        ctx.arc(n.x, n.y, rr, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.fillStyle = rgba(BASE_COLOR, 0.08 * OPACITY);
+        ctx.beginPath();
+        ctx.arc(n.x, n.y, rr * 3.2, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      ctx.restore();
+      raf = requestAnimationFrame(step);
+    }
+
+    // Boot + resize handling
+    const ro = new ResizeObserver(() => {
+      resize();
+      initNodes();
+    });
+    ro.observe(canvas);
+    resize();
+    initNodes();
+    raf = requestAnimationFrame(step);
+
+    // Cleanup if removed
+    const mo = new MutationObserver(() => {
+      if (!document.body.contains(root)) {
+        if (raf) cancelAnimationFrame(raf);
+        ro.disconnect();
+        mo.disconnect();
+      }
+    });
+    mo.observe(document.body, { childList: true, subtree: true });
+  })();
+</script>
