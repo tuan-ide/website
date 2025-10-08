@@ -1,4 +1,5 @@
 ---
+import { Icon } from "astro-icon/components";
 import FeatureCard from "../FeatureCard.astro";
 ---
 
@@ -6,16 +7,19 @@ import FeatureCard from "../FeatureCard.astro";
   <FeatureCard
     title="Non-Hierarchical Model"
     description="Escape the filesystem. Tuan's non-hierarchical data model connects code semantically."
-    icon="device_hub"
-  />
+  >
+    <Icon name="mdi:hub" slot="icon" />
+  </FeatureCard>
   <FeatureCard
     title="Semantic Graph"
     description="Visualize your codebase as an interactive graph of ideas, functions, and concepts."
-    icon="grain"
-  />
+  >
+    <Icon name="mdi:grain" slot="icon" />
+  </FeatureCard>
   <FeatureCard
     title="Rust Core"
     description="Built with performance in mind. Blazing fast performance powered by Rust."
-    icon="speed"
-  />
+  >
+    <Icon name="mdi:speedometer" slot="icon" />
+  </FeatureCard>
 </div>

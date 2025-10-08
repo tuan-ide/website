@@ -2,11 +2,24 @@
 interface Props {
   title: string;
   description: string;
-  icon: string;
 }
 ---
 
 <article class="border border-input-border bg-input-background p-4 rounded-sm">
-  <h1 class="text-lg font-medium mb-1 text-text">{Astro.props.title}</h1>
-  <p class="text-sm text-muted-foreground text-subtext">{Astro.props.description}</p>
+  <div class="flex gap-3">
+    <div
+      class="text-2xl mt-0.5"
+      style={{
+        color: "var(--kanban-color)",
+      }}
+    >
+      <slot name="icon" />
+    </div>
+    <div class="flex flex-col">
+      <h1 class="text-lg font-medium mb-1 text-text">{Astro.props.title}</h1>
+      <p class="text-sm text-muted-foreground text-subtext">
+        {Astro.props.description}
+      </p>
+    </div>
+  </div>
 </article>

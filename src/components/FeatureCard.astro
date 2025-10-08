@@ -1,12 +1,16 @@
 ---
 interface Props {
-  icon: string;
   title: string;
   description: string;
 }
 ---
 
-<article class="border border-input-border bg-input-background flex flex-col items-center text-center rounded-md py-16 sm:py-24 gap-4">
+<article
+  class="border border-input-border bg-input-background flex flex-col items-center text-center rounded-md py-16 sm:py-24 gap-4"
+>
+  <div class="text-3xl mt-0.5 text-primary">
+    <slot name="icon" />
+  </div>
   <h1 class="text-text text-lg font-bold">{Astro.props.title}</h1>
   <p class="text-subtext text-base text-balance">{Astro.props.description}</p>
 </article>

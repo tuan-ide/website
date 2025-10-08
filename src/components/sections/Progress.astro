@@ -1,4 +1,5 @@
 ---
+import { Icon } from "astro-icon/components";
 import KanbanCard from "../KanbanCard.astro";
 import KanbanColumn from "../KanbanColumn.astro";
 import SectionHeader from "../SectionHeader.astro";
@@ -14,35 +15,45 @@ import SectionHeader from "../SectionHeader.astro";
     <KanbanColumn
       title="Next Up"
       description="What we're tackling next."
-      borderClassName="bg-amber-300"
+      color="oklch(87.9% 0.169 91.605)"
     >
       <KanbanCard
         title="Semantic Analysis"
         description="Implement advanced semantic analysis to understand code contextually."
-        icon=""
-      />
+      >
+        <Icon name="mdi:grain" slot="icon" />
+      </KanbanCard>
+      <KanbanCard
+        title="Alpha Release for Waitlist"
+        description="Inviting our first users from the waitlist to provide crucial feedback."
+      >
+        <Icon name="mdi:rocket-launch" slot="icon" />
+      </KanbanCard>
     </KanbanColumn>
 
     <KanbanColumn
       title="Done"
       description="Key milestones we've already achieved."
-      borderClassName="bg-green-500"
+      color="oklch(76.5% 0.177 163.223)"
     >
       <KanbanCard
         title="VSCode Extension"
         description="Created a VSCode extension to get Tuan's capabilities within the editor."
-        icon="check_circle"
-      />
+      >
+        <Icon name="mdi:check-circle" slot="icon" />
+      </KanbanCard>
       <KanbanCard
         title="Rust Core"
         description="Built the core of Tuan in Rust for performance and reliability."
-        icon="check_circle"
-      />
+      >
+        <Icon name="mdi:check-circle" slot="icon" />
+      </KanbanCard>
       <KanbanCard
         title="Proof of Concept"
         description="Validated the core concepts and the viability of the graph-based approach."
-        icon="check_circle"
-      />
+      >
+        <Icon name="mdi:check-circle" slot="icon" />
+      </KanbanCard>
     </KanbanColumn>
   </div>
 </article>
