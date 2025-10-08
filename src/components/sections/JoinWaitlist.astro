@@ -1,8 +1,50 @@
-<div class="flex gap-4 flex-col w-full sm:flex-row sm:w-auto">
+<form
+  class="flex gap-4 flex-col w-full sm:flex-row sm:w-auto"
+  method="post"
+  data-astro-action="addToWishlist"
+>
   <input
     type="email"
+    name="email"
     placeholder="Enter your email"
-    class="bg-input-background placeholder:text-input-border border-input-border border text-white py-3 px-4 rounded-md"
+    class="bg-input-background placeholder:text-input-border border-input-border border text-white py-3 px-4 rounded-md focus:outline-none focus:border-white/70 flex-1"
+    required
   />
-  <button class="bg-primary text-white px-5 py-3 rounded-md font-semibold">Join the waitlist</button>
-</div>
+  <button class="bg-primary text-white px-5 py-3 rounded-md font-semibold hover:bg-primary/90 transition cursor-pointer">
+    Join the waitlist
+  </button>
+</form>
+
+<script>
+  import { actions } from "astro:actions";
+
+  const forms = document.querySelectorAll(
+    "form[data-astro-action='addToWishlist']"
+  ) as NodeListOf<HTMLFormElement>;
+  forms.forEach((form) => {
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const formData = new FormData(form);
+
+      const button = form.querySelector("button");
+      const initialText = button!.textContent;
+      button!.textContent = "Submitting...";
+      button!.disabled = true;
+
+      const { error } = await actions.addToWishlist(formData);
+
+      if (!error) {
+        button!.textContent = "Success!";
+        button!.classList.add("!bg-green-600");
+        setTimeout(() => {
+          button!.textContent = initialText;
+          button!.classList.remove("!bg-green-600");
+        }, 2000);
+        form.reset();
+      } else {
+        button!.textContent = initialText;
+        alert("Error! Please try again.");
+      }
+    });
+  });
+</script>
