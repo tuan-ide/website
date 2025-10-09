@@ -8,28 +8,31 @@ import JoinWaitlist from "../components/sections/JoinWaitlist.astro";
 import Progress from "../components/sections/Progress.astro";
 import SneakPeek from "../components/sections/SneakPeek.astro";
 import Layout from "../layouts/Layout.astro";
+import PostHogLayout from "../layouts/PostHogLayout.astro";
 ---
 
-<Layout>
-  <GraphBackground />
+<PostHogLayout>
+  <Layout>
+    <GraphBackground />
 
-  <div class="h-svh flex flex-col justify-center items-center gap-8">
-    <Hero />
-    <JoinWaitlist />
-    <div class="mt-4">
-      <FollowUs />
+    <div class="h-svh flex flex-col justify-center items-center gap-8">
+      <Hero />
+      <JoinWaitlist />
+      <div class="mt-4">
+        <FollowUs />
+      </div>
     </div>
-  </div>
-  <div class="sm:-mt-32">
-    <FeatureCards />
-  </div>
-  <div class="my-48">
-    <SneakPeek />
-  </div>
-  <div class="my-48">
-    <Progress />
-  </div>
-  <div class="my-48">
-    <Footer />
-  </div>
-</Layout>
+    <div class="sm:-mt-32">
+      <FeatureCards />
+    </div>
+    <div class="my-48">
+      <SneakPeek />
+    </div>
+    <div class="my-48">
+      <Progress />
+    </div>
+    <div class="my-48">
+      <Footer />
+    </div>
+  </Layout>
+</PostHogLayout>
