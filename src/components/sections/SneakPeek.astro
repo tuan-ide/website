@@ -8,7 +8,24 @@ import SectionHeader from "../SectionHeader.astro";
     description="A glimpse into the future of development."
   />
 
-  <div class="mt-6 shadow-xl shadow-primary/20 border border-input-border aspect-video overflow-hidden rounded-xl">
-    <img src="/sneak-peek.png" alt="Sneak Peek" class="w-full" />
+  <div
+    class="mt-6 shadow-2xl shadow-primary/20 border border-input-border aspect-video overflow-hidden rounded-xl"
+  >
+    <video autoplay muted controls loop class="w-full h-full object-cover">
+      <source src="/sneak-peek.webm" type="video/webm" />
+      <img
+        src="/sneak-peek.png"
+        alt="Sneak peek preview"
+        class="w-full h-full object-cover"
+        loading="lazy"
+        decoding="async"
+      />
+    </video>
+  </div>
+
+  <div class="mt-16 text-sm text-subtext border border-input-border bg-input-background text-center text-balance p-4 rounded-lg w-fit mx-auto max-w-xl">
+    <span class="text-primary">Disclaimer:</span> The video above shows a Minimum
+    Viable Product (MVP) and does not reflect our final vision. The final product
+    will be much more polished and refined.
   </div>
 </article>
